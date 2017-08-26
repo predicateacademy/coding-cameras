@@ -1,0 +1,19 @@
+#!/bin/bash
+
+FILE=$1
+TOP_TEXT=$2
+BOTTOM_TEXT=$3
+
+mkdir -p /tmp/unpack
+
+convert -coalesce $1 /tmp/unpack/out%05d.jpg
+
+for f in `ls /tmp/unpack/*.jpg`
+do
+  python memegenerator.py $f "$TOP_TEXT" "$BOTTOM_TEXT" 
+done
+
+convert -delay 10 -loop 0 /tmp/unpack/out* animation.gif
+
+rm -rf /tmp/unpack
+
